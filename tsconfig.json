@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "types": ["node"],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  
+  // does not work D:
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["src/components/*"],
+    }
+  }
+}
