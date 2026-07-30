@@ -1,15 +1,7 @@
-import {ReactNode, useState } from "react"
-
-export var PageSetter = (_: ReactNode) => {} 
+import Scanner from '@components/Scanner'
 
 function App() {
-
-
-    return (
-        <div>
-
-        </div>
-    )
+    return <Scanner />
 }
 
 export default App

@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
+    /* Path aliases. Must mirror resolve.alias in vite.config.ts, case included. */
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@lib/*": ["src/lib/*"]
+    },
+
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
