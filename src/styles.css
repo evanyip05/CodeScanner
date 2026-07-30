@@ -19,10 +19,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  height: 100%;
+}
+
 body {
-  position: fixed;
-  width: 100vw;
   height: 100vh;
+  height: 100dvh; /* dvh accounts for collapsing mobile browser chrome */
   margin: 0;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
     env(safe-area-inset-left);
@@ -34,21 +37,29 @@ body {
 }
 
 #root {
-  width: 100%;
   height: 100%;
 }
 
+/*
+ * Two panes with declared shares rather than content-derived heights.
+ * minmax(0, ...) is the load-bearing part: it lets a row shrink below its
+ * content, which is what hands scrolling to the pane inside it. A plain 1fr
+ * floors at min-content and the inner scroller never engages.
+ *
+ * Retune the split here — e.g. 2fr / 1fr for a taller viewfinder.
+ */
 .app {
-  display: flex;
-  flex-direction: column;
+  --stage-share: 1fr;
+  --log-share: 1fr;
+
+  display: grid;
+  grid-template-rows: auto minmax(0, var(--stage-share)) auto minmax(0, var(--log-share));
   height: 100%;
-  min-height: 0;
 }
 
 /* ── status strip ─────────────────────────────────────────────── */
 .strip {
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
   gap: 10px;
   padding: 9px 12px;
@@ -94,7 +105,6 @@ body {
 /* ── viewfinder ───────────────────────────────────────────────── */
 .stage {
   position: relative;
-  flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
   background: #000;
@@ -259,7 +269,7 @@ input:focus-visible {
 /* ── control rail ─────────────────────────────────────────────── */
 .rail {
   display: flex;
-  flex: 0 0 auto;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
@@ -334,11 +344,9 @@ select {
 
 /* ── read log ─────────────────────────────────────────────────── */
 .log {
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   min-height: 0;
-  max-height: 38vh;
   background: var(--ink);
 }
 .log .head {
@@ -372,8 +380,10 @@ select {
 .log ol {
   margin: 0;
   padding: 0 0 8px;
+  min-height: 0;
   list-style: none;
   overflow-y: auto;
+  overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
 .log li {
@@ -406,9 +416,12 @@ select {
   color: var(--amber);
 }
 .empty {
+  display: grid;
+  place-items: center;
   padding: 16px 12px 20px;
   border-top: 1px solid var(--rule);
   font-size: 13px;
+  text-align: center;
   color: var(--dimmer);
 }
 
